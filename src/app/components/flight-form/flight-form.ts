@@ -1,21 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, AbstractControl, ValidationErrors } from '@angular/forms';
-import { HttpClient, HttpClientModule, HttpHeaders } from '@angular/common/http'; // Add HttpHeaders import
 import { CommonModule } from '@angular/common';
-
-interface FlightInfoPayload {
-  airline: string;
-  arrivalDate: string;
-  arrivalTime: string;
-  flightNumber: string;
-  numOfGuests: number;
-  comments?: string;
-}
+import { FlightService, FlightInfoPayload } from '../../services/flight.service';
 
 @Component({
   selector: 'app-flight-form',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, HttpClientModule],
+  imports: [ReactiveFormsModule, CommonModule],
   templateUrl: './flight-form.html',
   styleUrl: './flight-form.css'
 })
@@ -24,10 +15,11 @@ export class FlightFormComponent implements OnInit {
   isSubmitting = false;
   responseMessage = '';
   isSuccess = false;
-
-  private apiUrl = 'https://us-central1-crm-sdk.cloudfunctions.net/flightInfoChallenge';
   
-  constructor(private fb: FormBuilder, private http: HttpClient) {
+  constructor(
+    private fb: FormBuilder,
+    private flightService: FlightService
+  ) {
     this.flightForm = this.createForm();
   }
 
@@ -82,7 +74,7 @@ export class FlightFormComponent implements OnInit {
     
     const inputDate = new Date(control.value);
     const today = new Date();
-    today.setHours(0, 0, 0, 0); // Reset time to compare dates only
+    today.setHours(0, 0, 0, 0);
     
     if (isNaN(inputDate.getTime())) {
       return { invalidDate: true };
@@ -98,15 +90,12 @@ export class FlightFormComponent implements OnInit {
   private timeFormatValidator(control: AbstractControl): ValidationErrors | null {
     if (!control.value) return null;
     
-    // Convert 24-hour format to 12-hour format for validation
     const timeValue = control.value;
     
-    // If it's in HH:mm format (24-hour), convert to 12-hour
     if (/^\d{2}:\d{2}$/.test(timeValue)) {
-      return null; // Browser time input gives us valid time
+      return null;
     }
     
-    // Check if it's already in 12-hour format
     const time12Regex = /^(0?[1-9]|1[0-2]):[0-5][0-9]\s?(AM|PM)$/i;
     if (!time12Regex.test(timeValue)) {
       return { invalidTimeFormat: true };
@@ -183,17 +172,6 @@ export class FlightFormComponent implements OnInit {
     return '';
   }
 
-  private formatTimeFor12Hour(time24: string): string {
-    if (!time24) return '';
-    
-    const [hours, minutes] = time24.split(':');
-    const hour = parseInt(hours, 10);
-    const ampm = hour >= 12 ? 'PM' : 'AM';
-    const hour12 = hour % 12 || 12;
-    
-    return `${hour12.toString().padStart(2, '0')}:${minutes} ${ampm}`;
-  }
-
   onSubmit() {
     if (this.flightForm.invalid) {
       // Mark all fields as touched to show validation errors
@@ -206,36 +184,21 @@ export class FlightFormComponent implements OnInit {
     this.isSubmitting = true;
     this.responseMessage = '';
 
-    const formValue = this.flightForm.value;
+    // Prepare payload using FlightService
+    const payload = this.flightService.prepareFlightPayload(this.flightForm.value);
     
-    // Format the data according to API requirements
-    const payload: FlightInfoPayload = {
-      airline: formValue.airline.trim(),
-      arrivalDate: formValue.arrivalDate,
-      arrivalTime: this.formatTimeFor12Hour(formValue.arrivalTime),
-      flightNumber: formValue.flightNumber.toUpperCase(),
-      numOfGuests: parseInt(formValue.numOfGuests, 10),
-      comments: formValue.comments?.trim() || undefined
-    };
+    console.log('FlightFormComponent: Prepared payload:', payload);
 
-    // Add the required headers
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'token': 'WW91IG11c3QgYmUgdGhlIGN1cmlvdXMgdHlwZS4gIEJyaW5nIHRoaXMgdXAgYXQgdGhlIGludGVydmlldyBmb3IgYm9udXMgcG9pbnRzICEh',
-      'candidate': 'Hari' 
-    });
-
-    console.log('Submitting payload:', payload);
-
-    this.http.post(this.apiUrl, payload, { headers }).subscribe({
-      next: (response: any) => {
-        console.log('Success response:', response);
+    // Submit using FlightService
+    this.flightService.submitFlightInfo(payload).subscribe({
+      next: (response) => {
+        console.log('FlightFormComponent: Success response:', response);
         this.isSuccess = true;
         this.responseMessage = 'Flight information submitted successfully!';
         this.flightForm.reset();
       },
       error: (error) => {
-        console.error('Error response:', error);
+        console.error('FlightFormComponent: Error response:', error);
         this.isSuccess = false;
         this.responseMessage = error.error?.message || 'Failed to submit flight information. Please try again.';
       },
