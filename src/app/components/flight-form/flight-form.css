@@ -1,9 +1,27 @@
 .flight-form-container {
   position: relative;
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+  background: url('/HomeBg.jpg') center center;
+  background-size: cover;
+  background-attachment: fixed;
   padding: 2rem;
   overflow: hidden;
+}
+
+.flight-form-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(107, 159, 90, 0.85) 0%,
+    rgba(74, 124, 89, 0.8) 50%,
+    rgba(45, 87, 62, 0.85) 100%
+  );
+  z-index: 1;
 }
 
 .background-elements {
@@ -13,7 +31,7 @@
   width: 100%;
   height: 100%;
   pointer-events: none;
-  z-index: 0;
+  z-index: 2;
 }
 
 .floating-plane {
@@ -111,7 +129,7 @@
 .form-title {
   font-size: 2.5rem;
   font-weight: 700;
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: linear-gradient(135deg, #6b9f5a, #4a7c59);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -120,7 +138,7 @@
 }
 
 .form-subtitle {
-  color: #6c757d;
+  color: #4a7c59;
   font-size: 1.1rem;
   font-weight: 500;
   margin: 0;
@@ -136,13 +154,13 @@
 .form-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 3rem; /* Increased from 2rem to 3rem for better spacing */
+  gap: 3rem;
 }
 
 .form-group {
   display: flex;
   flex-direction: column;
-  min-width: 0; /* Prevents overflow issues */
+  min-width: 0;
 }
 
 .form-group.full-width {
@@ -155,7 +173,7 @@
   gap: 0.5rem;
   font-size: 1rem;
   font-weight: 600;
-  color: #2d3748;
+  color: #2d573e;
   margin-bottom: 0.75rem;
   letter-spacing: 0.3px;
 }
@@ -183,20 +201,30 @@
   background: #ffffff;
   transition: all 0.3s ease;
   font-family: inherit;
-  color: #2d3748;
-  box-sizing: border-box; /* Ensures padding is included in width */
+  color: #2d573e;
+  box-sizing: border-box;
 }
 
 .form-control:focus {
   outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  border-color: #6b9f5a;
+  box-shadow: 0 0 0 3px rgba(107, 159, 90, 0.1);
   transform: translateY(-2px);
 }
 
 .form-control::placeholder {
   color: #a0aec0;
   font-style: italic;
+}
+
+.form-control.error {
+  border-color: #e53e3e;
+  background-color: #fed7d7;
+}
+
+.form-control.error:focus {
+  border-color: #e53e3e;
+  box-shadow: 0 0 0 3px rgba(229, 62, 62, 0.1);
 }
 
 .textarea {
@@ -212,13 +240,37 @@
   left: 50%;
   width: 0;
   height: 2px;
-  background: linear-gradient(90deg, #667eea, #764ba2);
+  background: linear-gradient(90deg, #6b9f5a, #4a7c59);
   transition: all 0.3s ease;
   transform: translateX(-50%);
 }
 
 .form-control:focus + .input-focus-line {
   width: 100%;
+}
+
+.error-message {
+  color: #e53e3e;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-top: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.error-message::before {
+  content: "⚠️";
+  font-size: 0.75rem;
+}
+
+.form-control.ng-valid.ng-touched:not(.error) {
+  border-color: #6b9f5a;
+}
+
+.form-control.ng-valid.ng-touched:not(.error):focus {
+  border-color: #6b9f5a;
+  box-shadow: 0 0 0 3px rgba(107, 159, 90, 0.1);
 }
 
 .submit-section {
@@ -228,7 +280,7 @@
 
 .submit-btn {
   position: relative;
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: linear-gradient(135deg, #6b9f5a, #4a7c59);
   color: white;
   border: none;
   padding: 1.25rem 3rem;
@@ -238,14 +290,14 @@
   cursor: pointer;
   transition: all 0.3s ease;
   overflow: hidden;
-  box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+  box-shadow: 0 10px 30px rgba(107, 159, 90, 0.3);
   letter-spacing: 0.5px;
   min-width: 280px;
 }
 
 .submit-btn:hover:not(:disabled) {
   transform: translateY(-3px);
-  box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 15px 40px rgba(107, 159, 90, 0.4);
 }
 
 .submit-btn:active:not(:disabled) {
@@ -327,8 +379,8 @@
 
 .response-message.success {
   background: linear-gradient(135deg, #d4edda, #c3e6cb);
-  color: #155724;
-  border: 1px solid #c3e6cb;
+  color: #2d573e;
+  border: 1px solid #6b9f5a;
 }
 
 .response-message.error {
@@ -361,11 +413,13 @@
   font-weight: 700;
   font-size: 1.1rem;
   margin-bottom: 0.25rem;
+  color: #2d573e;
 }
 
 .message-text {
   font-size: 0.95rem;
   line-height: 1.4;
+  color: #2d573e;
 }
 
 /* Responsive Design */
@@ -380,7 +434,7 @@
   
   .form-row {
     grid-template-columns: 1fr;
-    gap: 2rem; /* Adjusted for mobile */
+    gap: 2rem;
   }
   
   .form-title {
@@ -413,7 +467,7 @@
   }
   
   .form-row {
-    gap: 1.5rem; /* Even more compact for small screens */
+    gap: 1.5rem;
   }
 }
 
@@ -444,52 +498,12 @@
   }
 }
 
-/* Focus indicators for keyboard navigation */
 .form-control:focus-visible {
-  outline: 3px solid #667eea;
+  outline: 3px solid #ffd700;
   outline-offset: 2px;
 }
 
 .submit-btn:focus-visible {
-  outline: 3px solid #fff;
+  outline: 3px solid #ffd700;
   outline-offset: 2px;
-}
-/* Add these styles to your existing flight-form.css */
-/* filepath: c:\Users\pulap\monstercodingchallenge\flightchallenge\src\app\flight-form\flight-form.css */
-
-/* Add these validation styles to your existing CSS */
-
-.form-control.error {
-  border-color: #e53e3e;
-  background-color: #fed7d7;
-}
-
-.form-control.error:focus {
-  border-color: #e53e3e;
-  box-shadow: 0 0 0 3px rgba(229, 62, 62, 0.1);
-}
-
-.error-message {
-  color: #e53e3e;
-  font-size: 0.875rem;
-  font-weight: 500;
-  margin-top: 0.5rem;
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
-}
-
-.error-message::before {
-  content: "⚠️";
-  font-size: 0.75rem;
-}
-
-/* Validation success styles */
-.form-control.ng-valid.ng-touched:not(.error) {
-  border-color: #38a169;
-}
-
-.form-control.ng-valid.ng-touched:not(.error):focus {
-  border-color: #38a169;
-  box-shadow: 0 0 0 3px rgba(56, 161, 105, 0.1);
 }

@@ -1,0 +1,33 @@
+<nav class="navbar">
+  <div class="nav-content">
+    <!-- Left side - Brand -->
+    <div class="nav-brand">
+      <span class="brand-icon">🏆</span>
+      <h1 class="brand-text">Monster Coding Challenge</h1>
+    </div>
+    
+    <!-- Right side - Conditional content -->
+    <div class="nav-right">
+      <!-- Login Button (for Home page) -->
+      <button *ngIf="showLoginButton" 
+              class="login-btn" 
+              (click)="navigateToLogin()">
+        <span class="btn-icon">🚀</span>
+        Login
+      </button>
+      
+      <!-- User Info (for Flight Form page) -->
+      <div *ngIf="showUserInfo && (authService.user$ | async) as user" 
+           class="user-info">
+        <img [src]="user.photoURL" 
+             [alt]="user.displayName" 
+             class="user-avatar">
+        <span class="user-name">{{ user.displayName }}</span>
+        <button (click)="signOut()" class="logout-btn">
+          <span class="logout-icon">🚪</span>
+          Sign Out
+        </button>
+      </div>
+    </div>
+  </div>
+</nav>

@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
-import { CanActivate, Router } from '@angular/router';
+import { CanActivate, ActivatedRouteSnapshot, Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
-import { map, take } from 'rxjs/operators';
+import { take, map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -10,14 +10,20 @@ export class AuthGuard implements CanActivate {
   private authService = inject(AuthService);
   private router = inject(Router);
 
-  canActivate() {
+  canActivate(route: ActivatedRouteSnapshot) {
     return this.authService.isAuthenticated().pipe(
       take(1),
       map(isAuthenticated => {
         if (isAuthenticated) {
           return true;
         } else {
-          this.router.navigate(['/login']);
+          const url = route.url.map(segment => segment.path).join('/');
+          
+          if (url === 'flightform') {
+            this.router.navigate(['/login']);
+          } else {
+            this.router.navigate(['/home']);
+          }
           return false;
         }
       })

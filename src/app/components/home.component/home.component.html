@@ -1,0 +1,78 @@
+<div class="home-container">
+  <!-- Use Navbar Component with Login Button -->
+  <app-navbar [showLoginButton]="true" [showUserInfo]="false"></app-navbar>
+
+  <!-- Hero Section -->
+  <main class="hero-section">
+    <!-- ...existing hero content... -->
+    <div class="hero-content">
+      <!-- Main Heading -->
+      <div class="hero-text">
+        <h1 class="hero-title">
+          <span class="title-line-1">Flight Information</span>
+          <span class="title-line-2">Management System</span>
+          <span class="title-accent">✈️ Built with Excellence</span>
+        </h1>
+        
+        <p class="hero-subtitle">
+          Streamlined flight data processing with cutting-edge Angular technology, 
+          Firebase authentication, and enterprise-grade validation systems.
+        </p>
+
+        <!-- Feature Highlights -->
+        <div class="feature-grid">
+          <div class="feature-item" *ngFor="let feature of features; let i = index" 
+               [style.animation-delay.ms]="i * 200">
+            <div class="feature-icon">{{ feature.icon }}</div>
+            <div class="feature-content">
+              <h3>{{ feature.title }}</h3>
+              <p>{{ feature.description }}</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Call to Action -->
+        <div class="cta-section">
+          <button class="cta-primary" (click)="navigateToLogin()">
+            <span class="cta-icon">🚀</span>
+            <span class="cta-text">Get Started Now</span>
+            <span class="cta-arrow">→</span>
+          </button>
+          
+          <div class="tech-stack">
+            <p class="tech-label">Built with:</p>
+            <div class="tech-icons">
+              <span class="tech-icon angular">A</span>
+              <span class="tech-icon firebase">F</span>
+              <span class="tech-icon typescript">TS</span>
+              <span class="tech-icon rxjs">Rx</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats Section -->
+      <div class="stats-section">
+        <div class="stats-grid">
+          <div class="stat-item" *ngFor="let stat of stats; let i = index"
+               [style.animation-delay.ms]="i * 300">
+            <div class="stat-number">{{ stat.number }}</div>
+            <div class="stat-label">{{ stat.label }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Floating Elements -->
+    <div class="floating-elements">
+      <div class="floating-plane plane-1">✈️</div>
+      <div class="floating-plane plane-2">🛫</div>
+      <div class="floating-cloud cloud-1">☁️</div>
+      <div class="floating-cloud cloud-2">☁️</div>
+      <div class="floating-cloud cloud-3">☁️</div>
+    </div>
+
+    <!-- Background Overlay -->
+    <div class="bg-overlay"></div>
+  </main>
+</div>

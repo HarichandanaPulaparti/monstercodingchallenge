@@ -19,7 +19,6 @@ export class AuthService {
     const provider = new GoogleAuthProvider();
     try {
       const result = await signInWithPopup(this.auth, provider);
-      // Navigate to flight form after successful login
       this.router.navigate(['/flightform']);
       return result.user;
     } catch (error) {
@@ -31,8 +30,7 @@ export class AuthService {
   async signOut() {
     try {
       await signOut(this.auth);
-      // Navigate to login after sign out
-      this.router.navigate(['/login']);
+      this.router.navigate(['/home']);
     } catch (error) {
       console.error('Error signing out:', error);
       throw error;

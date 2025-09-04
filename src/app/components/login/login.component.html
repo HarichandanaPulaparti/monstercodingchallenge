@@ -1,62 +1,58 @@
 <div class="login-container">
-  <div class="background-animation">
-    <div class="floating-shape shape-1"></div>
-    <div class="floating-shape shape-2"></div>
-    <div class="floating-shape shape-3"></div>
-    <div class="floating-shape shape-4"></div>
+  <!-- Use Navbar Component with no buttons (only brand) -->
+  <app-navbar [showLoginButton]="false" [showUserInfo]="false"></app-navbar>
+
+  <!-- Floating elements -->
+  <div class="floating-elements">
+    <div class="floating-plane">✈️</div>
+    <div class="floating-cloud cloud-1">☁️</div>
+    <div class="floating-cloud cloud-2">☁️</div>
+    <div class="floating-cloud cloud-3">☁️</div>
   </div>
-  
+
   <div class="login-card">
-    <div class="logo-section">
-      <div class="logo-icon">✈️</div>
-      <h1 class="app-title">Flight Challenge</h1>
-      <div class="subtitle">Secure Flight Management System</div>
+    <div class="login-header">
+      <div class="header-icon">🚀</div>
+      <h1 class="login-title">Welcome Back</h1>
+      <p class="login-subtitle">Sign in to continue your flight journey</p>
     </div>
     
-    <div class="welcome-section">
-      <h2>Welcome Back!</h2>
-      <p class="description">Sign in to access your flight information dashboard</p>
-    </div>
-    
-    <div class="auth-section">
+    <div class="login-content">
+      <p class="welcome-text">
+        Access the Monster Coding Challenge flight information system. 
+        Experience seamless flight data management with enterprise-grade security.
+      </p>
+      
       <button 
-        class="google-btn" 
+        class="google-login-btn"
         (click)="signInWithGoogle()"
-        [disabled]="isLoading"
-        [class.loading]="isLoading">
+        [disabled]="isLoading">
         
-        <div class="btn-content">
+        <div class="btn-content" *ngIf="!isLoading">
           <img 
             src="https://developers.google.com/identity/images/g-logo.png" 
             alt="Google logo" 
             class="google-logo"
-            *ngIf="!isLoading">
-          
-          <div class="loading-spinner" *ngIf="isLoading">
-            <div class="spinner"></div>
-          </div>
-          
-          <span class="btn-text">
-            {{ isLoading ? 'Signing you in...' : 'Continue with Google' }}
-          </span>
+          >
+          <span class="btn-text">Sign in with Google</span>
         </div>
         
-        <div class="btn-shine"></div>
+        <div class="loading-spinner" *ngIf="isLoading">
+          <div class="spinner"></div>
+          <span class="btn-text">Signing you in...</span>
+        </div>
+        
+        <div class="btn-ripple"></div>
       </button>
-      
-      <div class="security-note">
-        <div class="security-icon">🔒</div>
-        <span>Secured by Google OAuth 2.0</span>
-      </div>
+    </div>
+
+    <div class="error-message" *ngIf="errorMessage">
+      <span class="error-icon">⚠️</span>
+      {{ errorMessage }}
     </div>
     
-    <div *ngIf="errorMessage" class="error-message">
-      <div class="error-icon">⚠️</div>
-      <span>{{ errorMessage }}</span>
-    </div>
-  </div>
-  
-  <div class="footer">
-    <p>&copy; 2025 Flight Challenge. Powered by Firebase & Angular</p>
+    <p class="footer-text">
+      Powered by <span class="highlight">Firebase Authentication</span>
+    </p>
   </div>
 </div>

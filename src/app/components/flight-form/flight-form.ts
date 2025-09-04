@@ -2,11 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, AbstractControl, ValidationErrors } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { FlightService, FlightInfoPayload } from '../../services/flight.service';
+import { NavbarComponent } from '../shared/navbar/navbar.component';
 
 @Component({
   selector: 'app-flight-form',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, NavbarComponent],
   templateUrl: './flight-form.html',
   styleUrl: './flight-form.css'
 })
@@ -24,7 +25,6 @@ export class FlightFormComponent implements OnInit {
   }
 
   ngOnInit() {
-    // Form is already created in constructor
   }
 
   private createForm(): FormGroup {

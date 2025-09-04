@@ -1,4 +1,6 @@
 <div class="flight-form-container">
+  <app-navbar [showLoginButton]="false" [showUserInfo]="true"></app-navbar>
+
   <div class="background-elements">
     <div class="floating-plane">✈️</div>
     <div class="cloud cloud-1">☁️</div>
@@ -167,7 +169,6 @@
       </div>
     </form>
 
-    <!-- Success/Error Messages -->
     <div *ngIf="responseMessage" 
          class="response-message"
          [class.success]="isSuccess"
