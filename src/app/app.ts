@@ -1,12 +1,12 @@
 import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterOutlet } from '@angular/router';
 import { AuthService } from './auth.service';
-import { FlightFormComponent } from './flight-form/flight-form';
-import { LoginComponent } from './login/login.component';
 
 @Component({
   selector: 'app-root',
-  imports: [CommonModule, FlightFormComponent, LoginComponent],
+  standalone: true,
+  imports: [RouterOutlet,CommonModule],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })

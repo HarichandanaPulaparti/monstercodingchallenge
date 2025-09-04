@@ -28,8 +28,12 @@
               type="text" 
               formControlName="airline" 
               class="form-control"
+              [class.error]="isFieldInvalid('airline')"
               placeholder="e.g., Emirates, Delta, British Airways">
             <div class="input-focus-line"></div>
+          </div>
+          <div class="error-message" *ngIf="isFieldInvalid('airline')">
+            {{ getFieldError('airline') }}
           </div>
         </div>
 
@@ -44,8 +48,12 @@
               type="text" 
               formControlName="flightNumber" 
               class="form-control"
+              [class.error]="isFieldInvalid('flightNumber')"
               placeholder="e.g., EK123, DL456">
             <div class="input-focus-line"></div>
+          </div>
+          <div class="error-message" *ngIf="isFieldInvalid('flightNumber')">
+            {{ getFieldError('flightNumber') }}
           </div>
         </div>
       </div>
@@ -62,8 +70,12 @@
               id="arrivalDate"
               type="date" 
               formControlName="arrivalDate" 
-              class="form-control">
+              class="form-control"
+              [class.error]="isFieldInvalid('arrivalDate')">
             <div class="input-focus-line"></div>
+          </div>
+          <div class="error-message" *ngIf="isFieldInvalid('arrivalDate')">
+            {{ getFieldError('arrivalDate') }}
           </div>
         </div>
 
@@ -77,8 +89,12 @@
               id="arrivalTime"
               type="time" 
               formControlName="arrivalTime" 
-              class="form-control">
+              class="form-control"
+              [class.error]="isFieldInvalid('arrivalTime')">
             <div class="input-focus-line"></div>
+          </div>
+          <div class="error-message" *ngIf="isFieldInvalid('arrivalTime')">
+            {{ getFieldError('arrivalTime') }}
           </div>
         </div>
       </div>
@@ -96,9 +112,14 @@
               type="number" 
               formControlName="numOfGuests" 
               class="form-control"
+              [class.error]="isFieldInvalid('numOfGuests')"
               min="1"
-              max="20">
+              step="1"
+              placeholder="Enter number of guests">
             <div class="input-focus-line"></div>
+          </div>
+          <div class="error-message" *ngIf="isFieldInvalid('numOfGuests')">
+            {{ getFieldError('numOfGuests') }}
           </div>
         </div>
       </div>

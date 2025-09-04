@@ -1,5 +1,6 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Auth, signInWithPopup, GoogleAuthProvider, signOut, user, User } from '@angular/fire/auth';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -8,6 +9,7 @@ import { map } from 'rxjs/operators';
 })
 export class AuthService {
   user$: Observable<User | null>;
+  private router = inject(Router);
 
   constructor(private auth: Auth) {
     this.user$ = user(this.auth);
@@ -17,6 +19,8 @@ export class AuthService {
     const provider = new GoogleAuthProvider();
     try {
       const result = await signInWithPopup(this.auth, provider);
+      // Navigate to flight form after successful login
+      this.router.navigate(['/flightform']);
       return result.user;
     } catch (error) {
       console.error('Error signing in with Google:', error);
@@ -27,6 +31,8 @@ export class AuthService {
   async signOut() {
     try {
       await signOut(this.auth);
+      // Navigate to login after sign out
+      this.router.navigate(['/login']);
     } catch (error) {
       console.error('Error signing out:', error);
       throw error;

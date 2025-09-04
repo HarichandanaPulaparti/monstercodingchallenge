@@ -11,16 +11,8 @@
     </div>
   </header>
   
-  <!-- Main content -->
+  <!-- Router outlet for displaying different components -->
   <main class="main-content">
-    <!-- Show flight form only if authenticated -->
-    <ng-container *ngIf="authService.user$ | async; else showLogin">
-      <app-flight-form></app-flight-form>
-    </ng-container>
-    
-    <!-- Show login component directly if not authenticated -->
-    <ng-template #showLogin>
-      <app-login></app-login>
-    </ng-template>
+    <router-outlet></router-outlet>
   </main>
 </div>

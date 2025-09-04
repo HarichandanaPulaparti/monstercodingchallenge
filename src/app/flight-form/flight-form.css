@@ -454,3 +454,42 @@
   outline: 3px solid #fff;
   outline-offset: 2px;
 }
+/* Add these styles to your existing flight-form.css */
+/* filepath: c:\Users\pulap\monstercodingchallenge\flightchallenge\src\app\flight-form\flight-form.css */
+
+/* Add these validation styles to your existing CSS */
+
+.form-control.error {
+  border-color: #e53e3e;
+  background-color: #fed7d7;
+}
+
+.form-control.error:focus {
+  border-color: #e53e3e;
+  box-shadow: 0 0 0 3px rgba(229, 62, 62, 0.1);
+}
+
+.error-message {
+  color: #e53e3e;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-top: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.error-message::before {
+  content: "⚠️";
+  font-size: 0.75rem;
+}
+
+/* Validation success styles */
+.form-control.ng-valid.ng-touched:not(.error) {
+  border-color: #38a169;
+}
+
+.form-control.ng-valid.ng-touched:not(.error):focus {
+  border-color: #38a169;
+  box-shadow: 0 0 0 3px rgba(56, 161, 105, 0.1);
+}
