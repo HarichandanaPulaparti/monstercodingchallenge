@@ -26,17 +26,25 @@
       </div>
       
       <!-- User Info (for Flight Form page) -->
-      <div *ngIf="showUserInfo && (authService.user$ | async) as user" 
-           class="user-info">
-        <img [src]="user.photoURL" 
-             [alt]="user.displayName" 
-             class="user-avatar">
-        <span class="user-name">{{ user.displayName }}</span>
-        <button (click)="signOut()" class="logout-btn">
-          <span class="logout-icon">🚪</span>
-          Sign Out
-        </button>
-      </div>
+      <!-- User Info (for Flight Form page) -->
+<div *ngIf="showUserInfo && (authService.user$ | async) as user" 
+     class="user-info">
+  <img [src]="user.photoURL" 
+       [alt]="user.displayName" 
+       class="user-avatar">
+  <span class="user-name">{{ user.displayName }}</span>
+  
+  <!-- Add My Flights button -->
+  <button (click)="navigateToMyFlights()" class="my-flights-btn">
+    <span class="flights-icon">📋</span>
+    My Flights
+  </button>
+  
+  <button (click)="signOut()" class="logout-btn">
+    <span class="logout-icon">🚪</span>
+    Sign Out
+  </button>
+</div>
     </div>
   </div>
 </nav>

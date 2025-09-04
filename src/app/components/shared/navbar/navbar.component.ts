@@ -47,6 +47,10 @@ export class NavbarComponent {
       }
     });
   }
+  // Add this method
+navigateToMyFlights() {
+  this.router.navigate(['/my-flights']);
+}
 
   async signOut() {
     try {

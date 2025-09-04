@@ -17,6 +17,11 @@ export const routes: Routes = [
     loadComponent: () => import('./components/flight-form/flight-form').then(m => m.FlightFormComponent),
     canActivate: [AuthGuard]
   },
+  {
+    path: 'my-flights',
+    loadComponent: () => import('./components/flight-list/flight-list.component').then(m => m.FlightListComponent),
+    canActivate: [AuthGuard]
+  },
   { 
     path: '', 
     redirectTo: '/home', 

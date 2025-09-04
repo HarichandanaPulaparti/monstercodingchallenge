@@ -170,18 +170,25 @@
     </form>
 
     <div *ngIf="responseMessage" 
-         class="response-message"
-         [class.success]="isSuccess"
-         [class.error]="!isSuccess">
-      <div class="message-icon">
-        {{ isSuccess ? '✅' : '❌' }}
-      </div>
-      <div class="message-content">
-        <div class="message-title">
-          {{ isSuccess ? 'Success!' : 'Error' }}
-        </div>
-        <div class="message-text">{{ responseMessage }}</div>
-      </div>
+     class="response-message" 
+     [ngClass]="{'success': isSuccess, 'error': !isSuccess}">
+  
+  <!-- Success Message with Action Button -->
+  <div *ngIf="isSuccess" class="success-content">
+    <div class="success-icon">✅</div>
+    <div class="success-text">
+      <h3>Success!</h3>
+      <p>{{responseMessage}}</p>
     </div>
+    <button class="view-flights-btn" (click)="navigateToMyFlights()">
+      <span class="btn-icon">📋</span>
+      View My Flights
+    </button>
+  </div>
+  
+  <!-- Error Message (keep existing) -->
+  <div *ngIf="!isSuccess" class="error-content">
+    <div class="error-icon">❌</div>
+    <p>{{responseMessage}}</p>
   </div>
 </div>

@@ -1,0 +1,73 @@
+<app-navbar [showUserInfo]="true"></app-navbar>
+
+<div class="flight-list-container">
+  <div class="header-section">
+    <h1>✈️ My Flight Information</h1>
+    <p>Track and manage your submitted flight details</p>
+    
+    <div class="stats-cards">
+      <div class="stat-card">
+        <div class="stat-number">{{userFlights.length}}</div>
+        <div class="stat-label">Total Flights</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">{{getTotalGuests()}}</div>
+        <div class="stat-label">Total Guests</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">{{getUniqueAirlines()}}</div>
+        <div class="stat-label">Airlines Used</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="actions-bar">
+    <button class="add-flight-btn" (click)="addNewFlight()">
+      <span>➕</span> Add New Flight
+    </button>
+  </div>
+
+  <div class="flights-grid" *ngIf="userFlights.length > 0; else noFlights">
+    <div class="flight-card" *ngFor="let flight of userFlights">
+      <div class="flight-header">
+        <div class="airline-info">
+          <h3>{{flight.airline}}</h3>
+          <span class="flight-number">{{flight.flightNumber}}</span>
+        </div>
+        <div class="flight-date">
+          {{formatDate(flight.arrivalDate)}}
+        </div>
+      </div>
+      
+      <div class="flight-details">
+        <div class="detail-item">
+          <span class="label">Arrival Time:</span>
+          <span class="value">{{flight.arrivalTime}}</span>
+        </div>
+        <div class="detail-item">
+          <span class="label">Guests:</span>
+          <span class="value">{{flight.numOfGuests}} people</span>
+        </div>
+        <div class="detail-item" *ngIf="flight.comments">
+          <span class="label">Comments:</span>
+          <span class="value">{{flight.comments}}</span>
+        </div>
+        <div class="detail-item">
+          <span class="label">Submitted:</span>
+          <span class="value">{{formatDateTime(flight.submittedAt)}}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #noFlights>
+    <div class="empty-state">
+      <div class="empty-icon">🛫</div>
+      <h2>No flights yet!</h2>
+      <p>Start by adding your first flight information</p>
+      <button class="add-flight-btn" (click)="addNewFlight()">
+        Add Your First Flight
+      </button>
+    </div>
+  </ng-template>
+</div>

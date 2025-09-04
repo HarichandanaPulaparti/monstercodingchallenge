@@ -1,8 +1,12 @@
+import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, AbstractControl, ValidationErrors } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { FlightService, FlightInfoPayload } from '../../services/flight.service';
 import { NavbarComponent } from '../shared/navbar/navbar.component';
+import { FlightStorageService } from '../../services/flight-storage.service';
+import { AuthService } from '../../services/auth.service';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-flight-form',
@@ -19,7 +23,10 @@ export class FlightFormComponent implements OnInit {
   
   constructor(
     private fb: FormBuilder,
-    private flightService: FlightService
+    private flightService: FlightService,
+    private flightStorage: FlightStorageService,
+    private authService: AuthService,
+    private router: Router
   ) {
     this.flightForm = this.createForm();
   }
@@ -172,8 +179,8 @@ export class FlightFormComponent implements OnInit {
     return '';
   }
 
-  onSubmit() {
-    if (this.flightForm.invalid) {
+  async onSubmit() {
+  if (this.flightForm.invalid) {
       // Mark all fields as touched to show validation errors
       Object.keys(this.flightForm.controls).forEach(key => {
         this.flightForm.get(key)?.markAsTouched();
@@ -184,27 +191,45 @@ export class FlightFormComponent implements OnInit {
     this.isSubmitting = true;
     this.responseMessage = '';
 
-    // Prepare payload using FlightService
-    const payload = this.flightService.prepareFlightPayload(this.flightForm.value);
-    
-    console.log('FlightFormComponent: Prepared payload:', payload);
+    try {
+      // Prepare payload using FlightService
+      const payload = this.flightService.prepareFlightPayload(this.flightForm.value);
 
-    // Submit using FlightService
-    this.flightService.submitFlightInfo(payload).subscribe({
-      next: (response) => {
-        console.log('FlightFormComponent: Success response:', response);
-        this.isSuccess = true;
-        this.responseMessage = 'Flight information submitted successfully!';
-        this.flightForm.reset();
-      },
-      error: (error) => {
-        console.error('FlightFormComponent: Error response:', error);
-        this.isSuccess = false;
-        this.responseMessage = error.error?.message || 'Failed to submit flight information. Please try again.';
-      },
-      complete: () => {
-        this.isSubmitting = false;
+      console.log('FlightFormComponent: Prepared payload:', payload);
+      
+
+      // Submit using FlightService (convert to promise for async/await)
+      const response = await this.flightService.submitFlightInfo(payload).toPromise();
+      
+      console.log('FlightFormComponent: Success response:', response);
+      
+      // Store flight data locally for the flight list
+      const user = await this.getCurrentUser();
+      if (user?.email) {
+        this.flightStorage.addFlight(this.flightForm.value, user.email);
+        console.log('Flight stored locally for user:', user.email);
       }
+      this.isSuccess = true;
+      this.responseMessage = 'Flight information submitted successfully! You can view it in ';
+      this.flightForm.reset();
+      
+    } catch (error: any) {
+      console.error('FlightFormComponent: Error response:', error);
+      this.isSuccess = false;
+      this.responseMessage = error.error?.message || 'Failed to submit flight information. Please try again.';
+    } finally {
+      this.isSubmitting = false;
+    }
+  }
+private async getCurrentUser(): Promise<any> {
+  return new Promise((resolve) => {
+      this.authService.user$.pipe(take(1)).subscribe(user => {
+        resolve(user);
+      });
     });
   }
+  navigateToMyFlights() {
+  this.router.navigate(['/my-flights']);
+}
+      
 }
