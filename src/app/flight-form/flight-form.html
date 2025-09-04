@@ -1,0 +1,165 @@
+<div class="flight-form-container">
+  <div class="background-elements">
+    <div class="floating-plane">✈️</div>
+    <div class="cloud cloud-1">☁️</div>
+    <div class="cloud cloud-2">☁️</div>
+    <div class="cloud cloud-3">☁️</div>
+  </div>
+
+  <div class="form-card">
+    <div class="form-header">
+      <div class="header-icon">🛫</div>
+      <h2 class="form-title">Flight Information Form</h2>
+      <p class="form-subtitle">Complete your flight details with precision</p>
+    </div>
+    
+    <form [formGroup]="flightForm" (ngSubmit)="onSubmit()" class="modern-form">
+      
+      <!-- Row 1: Airline and Flight Number -->
+      <div class="form-row">
+        <div class="form-group">
+          <label for="airline" class="form-label">
+            <span class="label-icon">🏢</span>
+            Airline <span class="required">*</span>
+          </label>
+          <div class="input-wrapper">
+            <input 
+              id="airline"
+              type="text" 
+              formControlName="airline" 
+              class="form-control"
+              placeholder="e.g., Emirates, Delta, British Airways">
+            <div class="input-focus-line"></div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="flightNumber" class="form-label">
+            <span class="label-icon">🎫</span>
+            Flight Number <span class="required">*</span>
+          </label>
+          <div class="input-wrapper">
+            <input 
+              id="flightNumber"
+              type="text" 
+              formControlName="flightNumber" 
+              class="form-control"
+              placeholder="e.g., EK123, DL456">
+            <div class="input-focus-line"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Row 2: Date and Time -->
+      <div class="form-row">
+        <div class="form-group">
+          <label for="arrivalDate" class="form-label">
+            <span class="label-icon">📅</span>
+            Arrival Date <span class="required">*</span>
+          </label>
+          <div class="input-wrapper">
+            <input 
+              id="arrivalDate"
+              type="date" 
+              formControlName="arrivalDate" 
+              class="form-control">
+            <div class="input-focus-line"></div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="arrivalTime" class="form-label">
+            <span class="label-icon">🕒</span>
+            Arrival Time <span class="required">*</span>
+          </label>
+          <div class="input-wrapper">
+            <input 
+              id="arrivalTime"
+              type="time" 
+              formControlName="arrivalTime" 
+              class="form-control">
+            <div class="input-focus-line"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Row 3: Guests -->
+      <div class="form-row">
+        <div class="form-group full-width">
+          <label for="numOfGuests" class="form-label">
+            <span class="label-icon">👥</span>
+            Number of Guests <span class="required">*</span>
+          </label>
+          <div class="input-wrapper">
+            <input 
+              id="numOfGuests"
+              type="number" 
+              formControlName="numOfGuests" 
+              class="form-control"
+              min="1"
+              max="20">
+            <div class="input-focus-line"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Row 4: Comments -->
+      <div class="form-row">
+        <div class="form-group full-width">
+          <label for="comments" class="form-label">
+            <span class="label-icon">💬</span>
+            Additional Comments
+          </label>
+          <div class="input-wrapper">
+            <textarea 
+              id="comments"
+              formControlName="comments" 
+              class="form-control textarea"
+              rows="4"
+              placeholder="Any special requirements, dietary restrictions, or additional information...">
+            </textarea>
+            <div class="input-focus-line"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="submit-section">
+        <button 
+          type="submit" 
+          class="submit-btn"
+          [disabled]="isSubmitting"
+          [class.loading]="isSubmitting">
+          
+          <div class="btn-content">
+            <span class="btn-icon" *ngIf="!isSubmitting">🚀</span>
+            <div class="loading-spinner" *ngIf="isSubmitting">
+              <div class="spinner"></div>
+            </div>
+            <span class="btn-text">
+              {{ isSubmitting ? 'Processing Flight Info...' : 'Submit Flight Information' }}
+            </span>
+          </div>
+          
+          <div class="btn-ripple"></div>
+        </button>
+      </div>
+    </form>
+
+    <!-- Success/Error Messages -->
+    <div *ngIf="responseMessage" 
+         class="response-message"
+         [class.success]="isSuccess"
+         [class.error]="!isSuccess">
+      <div class="message-icon">
+        {{ isSuccess ? '✅' : '❌' }}
+      </div>
+      <div class="message-content">
+        <div class="message-title">
+          {{ isSuccess ? 'Success!' : 'Error' }}
+        </div>
+        <div class="message-text">{{ responseMessage }}</div>
+      </div>
+    </div>
+  </div>
+</div>
