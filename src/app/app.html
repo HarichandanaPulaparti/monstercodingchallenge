@@ -1,15 +1,4 @@
 <div class="app-container">
-  <!-- Header with user info when authenticated -->
-  <header *ngIf="authService.user$ | async as user" class="header">
-    <div class="header-content">
-      <h1>Flight Challenge</h1>
-      <div class="user-info">
-        <img [src]="user.photoURL" [alt]="user.displayName" class="user-avatar">
-        <span class="user-name">{{ user.displayName }}</span>
-        <button (click)="signOut()" class="logout-btn">Sign Out</button>
-      </div>
-    </div>
-  </header>
   
   <!-- Router outlet for displaying different components -->
   <main class="main-content">
