@@ -1,20 +1,29 @@
 <nav class="navbar">
   <div class="nav-content">
-    <!-- Left side - Brand -->
-    <div class="nav-brand">
+    
+    <button class="nav-brand" (click)="navigateToHome()" aria-label="Go to home page">
       <span class="brand-icon">🏆</span>
       <h1 class="brand-text">Monster Coding Challenge</h1>
-    </div>
+    </button>
     
     <!-- Right side - Conditional content -->
     <div class="nav-right">
-      <!-- Login Button (for Home page) -->
-      <button *ngIf="showLoginButton" 
-              class="login-btn" 
-              (click)="navigateToLogin()">
-        <span class="btn-icon">🚀</span>
-        Login
-      </button>
+      <!-- Home page buttons -->
+      <div *ngIf="showLoginButton" class="home-buttons">
+        <!-- Flight Info Button -->
+        <button class="flight-info-btn" 
+                (click)="navigateToFlightInfo()">
+          <span class="btn-icon">✈️</span>
+          Flight Info
+        </button>
+        
+        <!-- Login Button -->
+        <button class="login-btn" 
+                (click)="navigateToLogin()">
+          <span class="btn-icon">🚀</span>
+          Login
+        </button>
+      </div>
       
       <!-- User Info (for Flight Form page) -->
       <div *ngIf="showUserInfo && (authService.user$ | async) as user" 

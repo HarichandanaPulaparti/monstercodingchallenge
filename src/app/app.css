@@ -65,11 +65,11 @@
   transform: translateY(-1px);
 }
 
-.main-content {
+/* .main-content {
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem;
-}
+} */
 
 .login-prompt {
   text-align: center;
@@ -131,9 +131,9 @@
     text-align: center;
   }
   
-  .main-content {
-    padding: 1rem;
-  }
+  /* .main-content {
+    padding-top: 4rem;
+  } */
   
   .login-prompt {
     padding: 2rem;
