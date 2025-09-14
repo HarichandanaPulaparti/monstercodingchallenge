@@ -604,3 +604,351 @@
   outline: 3px solid #ffd700;
   outline-offset: 2px;
 }
+
+/* OCR Section Styles */
+.ocr-section {
+  margin-bottom: 2rem;
+  padding: 2rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 20px;
+  color: white;
+  box-shadow: 0 20px 40px rgba(102, 126, 234, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.ocr-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml,<svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><g fill="%23ffffff" fill-opacity="0.05"><circle cx="30" cy="30" r="1"/></g></svg>');
+  pointer-events: none;
+}
+
+.ocr-header {
+  position: relative;
+  z-index: 2;
+}
+
+.ocr-title {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.ai-icon {
+  font-size: 1.5rem;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+.ocr-header h3 {
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: 600;
+  background: linear-gradient(45deg, #fff, #e3f2fd);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.ocr-header p {
+  margin: 0;
+  opacity: 0.9;
+  font-size: 0.95rem;
+}
+
+.ocr-upload-area {
+  margin: 1.5rem 0;
+  position: relative;
+  z-index: 2;
+}
+
+.upload-zone {
+  position: relative;
+}
+
+.file-input {
+  display: none;
+}
+
+.upload-label {
+  display: block;
+  padding: 2.5rem 2rem;
+  border: 2px dashed rgba(255, 255, 255, 0.4);
+  border-radius: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  position: relative;
+  overflow: hidden;
+}
+
+.upload-label::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.upload-label:hover::before {
+  left: 100%;
+}
+
+.upload-label:hover {
+  border-color: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.upload-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  position: relative;
+  z-index: 2;
+}
+
+.upload-icon {
+  font-size: 2.5rem;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+.upload-text {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.upload-title {
+  font-weight: 600;
+  font-size: 1.2rem;
+  margin-bottom: 0.25rem;
+}
+
+.upload-subtitle {
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+.image-preview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.preview-image {
+  max-width: 100%;
+  max-height: 300px;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  border: 3px solid rgba(255, 255, 255, 0.2);
+}
+
+.preview-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.btn {
+  padding: 0.875rem 1.75rem;
+  border: none;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.95rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transition: all 0.3s ease;
+  transform: translate(-50%, -50%);
+}
+
+.btn:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+.btn-ai {
+  background: linear-gradient(135deg, #00d2ff 0%, #3a7bd5 100%);
+  color: #1a1a1a;
+  box-shadow: 0 8px 25px rgba(0, 210, 255, 0.3);
+  position: relative;
+  z-index: 1;
+}
+
+.btn-ai:hover:not(:disabled) {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 35px rgba(0, 210, 255, 0.4);
+}
+
+.btn-ai:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(10px);
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+.ocr-status {
+  margin-top: 1.5rem;
+  position: relative;
+  z-index: 2;
+}
+
+.status-message {
+  padding: 1rem 1.5rem;
+  border-radius: 12px;
+  font-weight: 500;
+  backdrop-filter: blur(10px);
+  border: 1px solid transparent;
+  position: relative;
+  overflow: hidden;
+}
+
+.status-message::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  transition: left 0.8s;
+}
+
+.status-message.success::before {
+  left: 100%;
+}
+
+.status-message.success {
+  background: rgba(76, 175, 80, 0.2);
+  border-color: rgba(76, 175, 80, 0.5);
+  color: #81c784;
+  box-shadow: 0 8px 25px rgba(76, 175, 80, 0.2);
+}
+
+.status-message.error {
+  background: rgba(244, 67, 54, 0.2);
+  border-color: rgba(244, 67, 54, 0.5);
+  color: #ef5350;
+  box-shadow: 0 8px 25px rgba(244, 67, 54, 0.2);
+}
+
+.ocr-divider {
+  margin: 2rem 0 0 0;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+}
+
+.ocr-divider::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+}
+
+.ocr-divider span {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 0 1.5rem;
+  font-size: 0.9rem;
+  opacity: 0.9;
+  position: relative;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .ocr-section {
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .upload-content {
+    flex-direction: column;
+    text-align: center;
+    gap: 1rem;
+  }
+  
+  .upload-text {
+    text-align: center;
+  }
+  
+  .preview-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .btn {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .upload-label {
+    padding: 2rem 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .ocr-title {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.5rem;
+  }
+  
+  .ocr-header h3 {
+    font-size: 1.2rem;
+  }
+  
+  .upload-icon {
+    font-size: 2rem;
+  }
+}

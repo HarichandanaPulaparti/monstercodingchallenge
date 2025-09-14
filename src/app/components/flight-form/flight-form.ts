@@ -6,6 +6,7 @@ import { FlightService, FlightInfoPayload } from '../../services/flight.service'
 import { NavbarComponent } from '../shared/navbar/navbar.component';
 import { FlightStorageService } from '../../services/flight-storage.service';
 import { AuthService } from '../../services/auth.service';
+import { OCRService, ExtractedFlightData } from '../../services/ocr.service';
 import { take } from 'rxjs/operators';
 
 @Component({
@@ -21,11 +22,19 @@ export class FlightFormComponent implements OnInit {
   responseMessage = '';
   isSuccess = false;
   
+  // OCR-related properties
+  isProcessingOCR = false;
+  ocrMessage = '';
+  isOCRSuccess = false;
+  selectedFile: File | null = null;
+  imagePreview: string | null = null;
+  
   constructor(
     private fb: FormBuilder,
     private flightService: FlightService,
     private flightStorage: FlightStorageService,
     private authService: AuthService,
+    private ocrService: OCRService,
     private router: Router
   ) {
     this.flightForm = this.createForm();
@@ -33,6 +42,122 @@ export class FlightFormComponent implements OnInit {
 
   ngOnInit() {
   }
+
+
+  // OCR Methods
+  onFileSelected(event: any): void {
+  const file = event.target.files[0];
+  if (file) {
+    this.selectedFile = file;
+    this.createImagePreview(file);
+    this.ocrMessage = '';
+    this.isOCRSuccess = false;
+    console.log('File selected:', file.name);
+  }
+}
+  
+
+  private createImagePreview(file: File): void {
+    const reader = new FileReader();
+    reader.onload = (e: any) => {
+      this.imagePreview = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+
+
+async processOCR(): Promise<void> {
+  if (!this.selectedFile) {
+    this.ocrMessage = '📁 Please select an image first.';
+    this.isOCRSuccess = false;
+    return;
+  }
+
+  console.log('Starting AI Vision analysis for file:', this.selectedFile.name);
+  
+  this.isProcessingOCR = true;
+  this.ocrMessage = '🤖 AI is analyzing your boarding pass... This may take a few seconds.';
+  this.isOCRSuccess = false;
+
+  try {
+    const extractedData = await this.ocrService.extractFlightDataFromImage(this.selectedFile);
+    
+    console.log('AI Vision completed with data:', extractedData);
+    
+    if (extractedData.confidence && extractedData.confidence > 0.6) {
+      this.autofillForm(extractedData);
+      this.ocrMessage = `✅ AI successfully extracted flight data! Confidence: ${Math.round(extractedData.confidence * 100)}%`;
+      this.isOCRSuccess = true;
+    } else if (extractedData.confidence && extractedData.confidence > 0.3) {
+      this.autofillForm(extractedData);
+      this.ocrMessage = `⚠️ AI extracted some data with low confidence (${Math.round(extractedData.confidence * 100)}%). Please verify all fields.`;
+      this.isOCRSuccess = true;
+    } else {
+      this.ocrMessage = '❌ AI could not reliably extract data from this image. Please try a clearer image or fill manually.';
+      this.isOCRSuccess = false;
+    }
+    
+  } catch (error: any) {
+    console.error('AI Vision processing failed:', error);
+    this.ocrMessage = error.message || '❌ AI analysis failed. Please try again or fill the form manually.';
+    this.isOCRSuccess = false;
+  } finally {
+    this.isProcessingOCR = false;
+    console.log('AI Vision process completed');
+  }
+}
+
+
+private autofillForm(data: any): void {
+  console.log('Auto-filling form with extracted data:', data);
+  
+  let displayTime = data.arrivalTime;
+  if (displayTime && displayTime.includes(':')) {
+  }
+
+  this.flightForm.patchValue({
+    airline: data.airline || '',
+    flightNumber: data.flightNumber || '',
+    arrivalDate: data.arrivalDate || '',
+    arrivalTime: displayTime || ''
+  });
+
+  if (data.airline) this.flightForm.get('airline')?.markAsTouched();
+  if (data.flightNumber) this.flightForm.get('flightNumber')?.markAsTouched();
+  if (data.arrivalDate) this.flightForm.get('arrivalDate')?.markAsTouched();
+  if (data.arrivalTime) this.flightForm.get('arrivalTime')?.markAsTouched();
+  
+  console.log('Form auto-filled successfully');
+}
+
+
+clearOCR(): void {
+  this.selectedFile = null;
+  this.imagePreview = null;
+  this.ocrMessage = '';
+  this.isOCRSuccess = false;
+  this.isProcessingOCR = false;
+  
+  this.flightForm.patchValue({
+    airline: '',
+    flightNumber: '',
+    arrivalDate: '',
+    arrivalTime: ''
+  });
+  
+  ['airline', 'flightNumber', 'arrivalDate', 'arrivalTime'].forEach(fieldName => {
+    this.flightForm.get(fieldName)?.markAsUntouched();
+    this.flightForm.get(fieldName)?.markAsPristine();
+  });
+  
+  const fileInput = document.getElementById('boarding-pass-upload') as HTMLInputElement;
+  if (fileInput) {
+    fileInput.value = '';
+  }
+  
+  console.log('OCR data and form fields cleared');
+}
+
 
   private createForm(): FormGroup {
     return this.fb.group({

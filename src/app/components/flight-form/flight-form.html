@@ -14,6 +14,68 @@
       <h2 class="form-title">Flight Information Form</h2>
       <p class="form-subtitle">Complete your flight details with precision</p>
     </div>
+
+    <!-- OCR Scanner Section -->
+
+    <div class="ocr-section">
+      <div class="ocr-header">
+        <div class="ocr-title">
+          <span class="ai-icon">🤖</span>
+          <h3>AI-Powered Boarding Pass Scanner</h3>
+        </div>
+        <p>Upload your boarding pass and let OpenAI Vision extract flight details automatically!</p>
+      </div>
+
+      <div class="ocr-upload-area" [class.has-image]="imagePreview">
+        <div class="upload-zone" *ngIf="!imagePreview">
+          <input 
+            type="file" 
+            (change)="onFileSelected($event)" 
+            accept="image/*" 
+            id="boarding-pass-upload"
+            class="file-input">
+          <label for="boarding-pass-upload" class="upload-label">
+            <div class="upload-content">
+              <div class="upload-icon">📱</div>
+              <div class="upload-text">
+                <span class="upload-title">Upload Boarding Pass</span>
+                <span class="upload-subtitle">Support JPG, PNG formats</span>
+              </div>
+            </div>
+          </label>
+        </div>
+
+        <div class="image-preview" *ngIf="imagePreview">
+          <img [src]="imagePreview" alt="Boarding pass preview" class="preview-image">
+          <div class="preview-actions">
+            <button 
+              type="button" 
+              (click)="processOCR()" 
+              [disabled]="isProcessingOCR"
+              class="btn btn-ai">
+              <span *ngIf="!isProcessingOCR">🔍 Extract Data</span>
+              <span *ngIf="isProcessingOCR">🤖 Processing...</span>
+            </button>
+            <button 
+              type="button" 
+              (click)="clearOCR()" 
+              class="btn btn-secondary">
+              ❌ Clear
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="ocr-status" *ngIf="ocrMessage">
+        <div class="status-message" [class.success]="isOCRSuccess" [class.error]="!isOCRSuccess">
+          {{ ocrMessage }}
+        </div>
+      </div>
+
+      <div class="ocr-divider">
+        <span>OR fill manually below</span>
+      </div>
+    </div>
     
     <form [formGroup]="flightForm" (ngSubmit)="onSubmit()" class="modern-form">
       
@@ -190,5 +252,8 @@
   <div *ngIf="!isSuccess" class="error-content">
     <div class="error-icon">❌</div>
     <p>{{responseMessage}}</p>
+  </div>
+</div>
+
   </div>
 </div>

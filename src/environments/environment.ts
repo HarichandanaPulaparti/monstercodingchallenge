@@ -12,5 +12,6 @@ export const environment = {
     flightInfoUrl: 'https://us-central1-crm-sdk.cloudfunctions.net/flightInfoChallenge',
     token: 'WW91IG11c3QgYmUgdGhlIGN1cmlvdXMgdHlwZS4gIEJyaW5nIHRoaXMgdXAgYXQgdGhlIGludGVydmlldyBmb3IgYm9udXMgcG9pbnRzICEh',
     candidate: 'Hari'
-  }
+  },
+  openaiApiKey: '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',
 };
